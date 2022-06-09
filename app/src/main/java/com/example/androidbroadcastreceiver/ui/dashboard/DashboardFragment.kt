@@ -1,6 +1,8 @@
 package com.example.androidbroadcastreceiver.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,11 +34,32 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
+        binding.btnIniciar.setOnClickListener {
+            Intent(context,MyService::class.java).also {
+
+                activity?.startService(it)
+                Log.i(TAG, "Servicio Iniciado fragment ")
+            }
+        }
+
+        binding.btnFinalizar.setOnClickListener {
+            Intent(context,MyService::class.java).also {
+                activity?.stopService(it)
+                Log.i(TAG, "Servicio Finalizado fragment ")
+            }
+        }
+
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        Log.i(TAG, "onDestroyView Fragment ")
+    }
+
+    companion object{
+        const val TAG = "DashboardFragment"
     }
 }
