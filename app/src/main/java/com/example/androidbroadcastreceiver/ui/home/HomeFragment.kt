@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidbroadcastreceiver.databinding.FragmentHomeBinding
@@ -29,6 +30,10 @@ class HomeFragment : Fragment() {
         homeViewModel.text.observe(viewLifecycleOwner){
             Log.i(TAG, "view model: $it")
             textView.text = it
+        }
+
+        binding.btnValue.setOnClickListener {
+            Toast.makeText(context, "Almacenando valor", Toast.LENGTH_SHORT).show()
         }
 
         return root
