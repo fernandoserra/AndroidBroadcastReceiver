@@ -6,12 +6,16 @@ class SharedPreferences (context: Context) {
 
     private val sharedPreferences = context.getSharedPreferences("PreferencesApp",0)
 
-    fun putBoolean(Key:String, value: Boolean){
-        sharedPreferences.edit().putBoolean(Key,value).apply()
+    fun putValue(Key:String, value: String){
+        sharedPreferences.edit().putString(Key,value).apply()
     }
 
-    fun getBoolean(Key: String):Boolean{
-        return  sharedPreferences.getBoolean(Key,false)
+    fun getValues(Key: String): String? {
+        return  sharedPreferences.getString(Key,"")
+    }
+
+    fun getAllValues(): MutableMap<String, *>? {
+        return  sharedPreferences.all
     }
 
 }
