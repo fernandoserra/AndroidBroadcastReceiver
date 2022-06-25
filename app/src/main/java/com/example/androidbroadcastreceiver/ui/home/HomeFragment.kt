@@ -1,5 +1,6 @@
 package com.example.androidbroadcastreceiver.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.androidbroadcastreceiver.Service
 import com.example.androidbroadcastreceiver.databinding.FragmentHomeBinding
 import com.example.androidbroadcastreceiver.utils.SharedPreferences
 
@@ -44,6 +46,12 @@ class HomeFragment : Fragment() {
             Log.i(TAG, "BUSCANDO Key::: ${binding.editTextKey.text} ")
            val show = preferencesProvider.getValues(binding.editTextKey.text.toString()).toString()
             Toast.makeText(context, "valor: $show", Toast.LENGTH_SHORT).show()
+        }
+
+        binding.btnService.setOnClickListener {
+
+            val intent = Intent(context, Service::class.java)
+            activity?.stopService(intent)
         }
 
         return root
