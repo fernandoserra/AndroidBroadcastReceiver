@@ -1,10 +1,16 @@
 package com.example.androidbroadcastreceiver
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.util.Log
+import androidx.annotation.RequiresApi
+
 
 class Service : Service() {
 
@@ -14,11 +20,11 @@ class Service : Service() {
         TODO("Return the communication channel to the service.")
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, ":::START::: ")
 
         var counter =0
-
         handler.apply {
             var runnable= object : Runnable{
                 override fun run() {
@@ -30,8 +36,35 @@ class Service : Service() {
             postDelayed(runnable,1000)
         }
 
+        /*Thread {
+            while (true) {
+                Log.e("Service", "Service is running...")
+                try {
+                    Thread.sleep(2000)
+                } catch (e: InterruptedException) {
+                    e.printStackTrace()
+                }
+            }
+        }.start()*/
 
-        return START_STICKY //si el sistema mata el servicio se vuelva a crear
+        val CHANNELID = "Foreground Service ID"
+        val channel = NotificationChannel(
+            CHANNELID,
+            CHANNELID,
+            NotificationManager.IMPORTANCE_LOW
+        )
+
+        getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+        val notification = Notification.Builder(this, CHANNELID)
+            .setContentText("Service is running")
+            .setContentTitle("Service enabled")
+            .setSmallIcon(R.drawable.ic_launcher_background)
+
+        startForeground(1001, notification.build())
+
+        return super.onStartCommand(intent, flags, startId)
+
+        //return START_STICKY //si el sistema mata el servicio se vuelva a crear
         //return super.onStartCommand(intent, flags, startId)
     }
 
@@ -40,8 +73,13 @@ class Service : Service() {
         handler.removeCallbacksAndMessages(null)
         super.onDestroy()
     }
-    
+
+
+
+
     companion object{
         const val TAG = "Service"
+        const val NOTIFICATION_ID = 1
+        const val CHANNEL_ID = "channel_id"
     }
 }
