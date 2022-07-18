@@ -20,7 +20,7 @@ class Service : Service() {
     private val myBinder = MyLocalBinder()
 
     override fun onBind(intent: Intent): IBinder {
-        TODO("Return the communication channel to the service.")
+        return myBinder
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
