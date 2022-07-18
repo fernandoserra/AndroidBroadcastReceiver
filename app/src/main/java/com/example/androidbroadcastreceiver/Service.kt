@@ -11,6 +11,8 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class Service : Service() {
@@ -75,6 +77,12 @@ class Service : Service() {
         Log.d(TAG, ":::DESTROY::: ")
         handler.removeCallbacksAndMessages(null)
         super.onDestroy()
+    }
+
+
+    fun getCurrentTime(): String {
+        val dateformat = SimpleDateFormat("HH:mm:ss MM/dd/yyyy",Locale.US)
+        return dateformat.format(Date())
     }
 
 
