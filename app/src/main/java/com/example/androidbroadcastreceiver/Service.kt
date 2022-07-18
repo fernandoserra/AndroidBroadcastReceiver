@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
+import android.os.Binder
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -15,6 +16,8 @@ import androidx.annotation.RequiresApi
 class Service : Service() {
 
     val handler= Handler()
+
+    private val myBinder = MyLocalBinder()
 
     override fun onBind(intent: Intent): IBinder {
         TODO("Return the communication channel to the service.")
@@ -74,6 +77,12 @@ class Service : Service() {
         super.onDestroy()
     }
 
+
+    inner class MyLocalBinder : Binder() {
+        fun getService() : Service {
+            return this@Service
+        }
+    }
 
 
 
