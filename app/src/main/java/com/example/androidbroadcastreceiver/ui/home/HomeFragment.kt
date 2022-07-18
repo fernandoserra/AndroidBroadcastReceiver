@@ -10,7 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.androidbroadcastreceiver.Service
+import com.example.androidbroadcastreceiver.MainActivity
+import com.example.androidbroadcastreceiver.MyService
 import com.example.androidbroadcastreceiver.databinding.FragmentHomeBinding
 import com.example.androidbroadcastreceiver.utils.SharedPreferences
 
@@ -50,8 +51,11 @@ class HomeFragment : Fragment() {
 
         binding.btnService.setOnClickListener {
 
-            val intent = Intent(context, Service::class.java)
+            val intent = Intent(context, MyService::class.java)
             activity?.stopService(intent)
+        }
+        binding.showTime.setOnClickListener {
+            (activity as? MainActivity)?.showData()
         }
 
         return root
