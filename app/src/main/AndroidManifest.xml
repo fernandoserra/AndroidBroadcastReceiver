@@ -16,7 +16,7 @@
         android:theme="@style/Theme.AndroidBroadcastReceiver"
         tools:targetApi="31">
         <service
-            android:name=".Service"
+            android:name=".MyService"
             android:enabled="true"
             android:exported="true"/>
 

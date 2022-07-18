@@ -15,11 +15,13 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class Service : Service() {
+class MyService : Service() {
 
     val handler= Handler()
 
     private val myBinder = MyLocalBinder()
+
+    private var count = 0
 
     override fun onBind(intent: Intent): IBinder? {
         return myBinder
@@ -35,6 +37,7 @@ class Service : Service() {
                 override fun run() {
                     counter ++
                     Log.d(TAG, "run: $counter")
+                    count=counter
                     postDelayed(this, 1000)
                 }
             }
@@ -85,10 +88,17 @@ class Service : Service() {
         return dateformat.format(Date())
     }
 
+    fun getTime(): String {
+        Log.i(TAG, "Ejectuando getTime: $count")
+        return count.toString()
+    }
+
+
+
 
     inner class MyLocalBinder : Binder() {
-        fun getService() : Service {
-            return this@Service
+        fun getService() : MyService {
+            return this@MyService
         }
     }
 
