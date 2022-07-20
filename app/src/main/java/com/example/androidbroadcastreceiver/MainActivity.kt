@@ -8,13 +8,16 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.androidbroadcastreceiver.databinding.ActivityMainBinding
+import com.example.androidbroadcastreceiver.utils.NetworkConnection
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.launch
 
@@ -25,11 +28,21 @@ class MainActivity : AppCompatActivity() {
     var myService: MyService? = null
     var isBound = false
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this, Observer { isConnected->
+            if(isConnected){
+                Toast.makeText(this, "Si tiene conexion", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "Error en la conexion", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         val navView: BottomNavigationView = binding.navView
 
