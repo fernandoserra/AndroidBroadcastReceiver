@@ -19,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.androidbroadcastreceiver.databinding.ActivityMainBinding
 import com.example.androidbroadcastreceiver.utils.NetworkConnection
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -38,9 +39,19 @@ class MainActivity : AppCompatActivity() {
         val networkConnection = NetworkConnection(applicationContext)
         networkConnection.observe(this, Observer { isConnected->
             if(isConnected){
-                Toast.makeText(this, "Si tiene conexion", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Si tiene conexion", Toast.LENGTH_SHORT).show()
+                val snack = Snackbar.make(binding.root,"Si tiene conexion",Snackbar.LENGTH_SHORT)
+                snack.setAction("Cerrar"){
+                    snack.dismiss()
+                }
+                snack.show()
             }else{
-                Toast.makeText(this, "Error en la conexion", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Error en la conexion", Toast.LENGTH_SHORT).show()
+                val snack = Snackbar.make(binding.root,"Error en la conexion",Snackbar.LENGTH_SHORT)
+                snack.setAction("Cerrar"){
+                    snack.dismiss()
+                }
+                snack.show()
             }
         })
 
