@@ -11,10 +11,15 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
+private  val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class UserManager(val context: Context) {
 
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+   // val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
+    companion object{
+        val STATUS = stringPreferencesKey("STATUS")
+    }
 
     suspend fun save(key:String, value:String){
         val dataStoreKey= stringPreferencesKey(key)
@@ -39,7 +44,5 @@ class UserManager(val context: Context) {
         it[STATUS] ?: ""
     }
 
-    companion object{
-        val STATUS = stringPreferencesKey("STATUS")
-    }
+
 }

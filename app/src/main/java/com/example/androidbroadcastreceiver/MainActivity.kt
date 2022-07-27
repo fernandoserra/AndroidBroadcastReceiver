@@ -11,13 +11,16 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.androidbroadcastreceiver.databinding.ActivityMainBinding
+import com.example.androidbroadcastreceiver.ui.home.HomeFragment
 import com.example.androidbroadcastreceiver.utils.NetworkConnection
+import com.example.androidbroadcastreceiver.utils.UserManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
@@ -31,12 +34,24 @@ class MainActivity : AppCompatActivity() {
     var myService: MyService? = null
     var isBound = false
 
+    //private lateinit var  userManager : UserManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        //val  userManager= context?.let { UserManager(it) }
+
+
+       val  userManager=UserManager(this)
+        userManager.statusFlow.asLiveData().observe(this) {
+            Log.i("MainActivity", "statusFlow: $it" )
+        }
+        //observeStatus()
+
+
 
         val networkConnection = NetworkConnection(applicationContext)
         networkConnection.observe(this, Observer { isConnected->
@@ -77,7 +92,15 @@ class MainActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
 
+
     }
+
+    /*private fun  observeStatus(){
+        userManager.statusFlow.asLiveData().observe(this) {
+            Log.i("MainActivity", "statusFlow: $it" )
+        }
+
+    }*/
 
     fun foregroundServiceRunning(): Boolean {
         val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager

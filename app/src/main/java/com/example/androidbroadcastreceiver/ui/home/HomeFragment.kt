@@ -14,6 +14,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import com.example.androidbroadcastreceiver.MainActivity
 import com.example.androidbroadcastreceiver.MyService
@@ -33,9 +34,9 @@ class HomeFragment : Fragment() {
 
 
     //DataStore
-    private lateinit var dataStore:DataStore<Preferences>
+    //private lateinit var dataStore:DataStore<Preferences>
 
-
+    private lateinit var  userManager : UserManager
 
     override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,   savedInstanceState: Bundle? ): View {
         preferencesProvider= SharedPreferences(requireContext())
@@ -45,7 +46,15 @@ class HomeFragment : Fragment() {
 
         //dataStore = createDataStore(name ="settings")
 
-        val  userManager= context?.let { UserManager(it) }
+       //val  userManager= context?.let { UserManager(it) }
+
+        userManager= UserManager(requireContext())
+
+
+
+         userManager.statusFlow.asLiveData().observe(viewLifecycleOwner) {
+              Log.i(TAG, "statusFlow: $it" )
+          }
 
 
 
@@ -65,9 +74,13 @@ class HomeFragment : Fragment() {
 
             //DataStore
             lifecycleScope.launch{
-                userManager?.save(binding.editTextKey.text.toString(),binding.editTextValue.text.toString())
+                userManager.save(binding.editTextKey.text.toString(),binding.editTextValue.text.toString())
             }
         }
+
+       /* userManager.statusFlow.asLiveData().observe(viewLifecycleOwner) {
+            Log.i(TAG, "statusFlow: $it" )
+        }*/
 
         binding.btnGetValue.setOnClickListener {
             Log.i(TAG, "BUSCANDO Key::: ${binding.editTextKey.text} ")
@@ -75,10 +88,10 @@ class HomeFragment : Fragment() {
             Toast.makeText(context, "valor: $show", Toast.LENGTH_SHORT).show()*/
 
             //DataStore
-            lifecycleScope.launch{
+            /*lifecycleScope.launch{
                 val show = userManager?.read(binding.editTextKey.text.toString())
                 Toast.makeText(context, "valor: $show", Toast.LENGTH_SHORT).show()
-            }
+            }*/
         }
 
         binding.btnService.setOnClickListener {
