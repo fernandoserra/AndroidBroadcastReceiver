@@ -46,9 +46,7 @@ class MainActivity : AppCompatActivity() {
 
 
        val  userManager=UserManager(this)
-        userManager.statusFlow.asLiveData().observe(this) {
-            Log.i("MainActivity", "statusFlow: $it" )
-        }
+
         //observeStatus()
 
 
@@ -91,7 +89,9 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-
+        userManager.statusFlow.asLiveData().observe(this) {
+            Log.i("MainActivity", "statusFlow: $it" )
+        }
 
     }
 
