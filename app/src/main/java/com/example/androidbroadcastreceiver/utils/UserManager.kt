@@ -7,7 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 
 class UserManager(val context: Context) {
@@ -33,5 +35,11 @@ class UserManager(val context: Context) {
         return prefs[dataStoreKey]
     }
 
+    val statusFlow:Flow<String> = context.dataStore.data.map {
+        it[STATUS] ?: ""
+    }
 
+    companion object{
+        val STATUS = stringPreferencesKey("STATUS")
+    }
 }
