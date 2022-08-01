@@ -40,6 +40,13 @@ class UserManager(val context: Context) {
         return prefs[dataStoreKey]
     }
 
+
+    suspend fun saveMode(mode:String){
+        context.dataStore.edit {
+            it[STATUS] = mode
+        }
+    }
+
     val statusFlow:Flow<String> = context.dataStore.data.map {
         it[STATUS] ?: ""
     }
