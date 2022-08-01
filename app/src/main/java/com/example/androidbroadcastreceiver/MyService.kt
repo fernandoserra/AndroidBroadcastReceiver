@@ -11,6 +11,11 @@ import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.androidbroadcastreceiver.utils.UserManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -23,13 +28,23 @@ class MyService : Service() {
 
     private var count = 0
 
+    //private lateinit var  userManager : UserManager
+
     override fun onBind(intent: Intent): IBinder? {
+
+
+
         return myBinder
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d(TAG, ":::START::: ")
+
+        //userManager= UserManager(this)
+
+        val  userManager= UserManager(this)
+
 
         var counter =0
         handler.apply {
@@ -38,7 +53,11 @@ class MyService : Service() {
                     counter ++
                     Log.d(TAG, "run: $counter")
                     count=counter
-                    postDelayed(this, 1000)
+                    postDelayed(this, 10000)
+
+                    GlobalScope.launch {
+                        userManager.saveMode("yyySIPIII ${count}")
+                    }
                 }
             }
             postDelayed(runnable,1000)
@@ -54,6 +73,8 @@ class MyService : Service() {
                 }
             }
         }.start()*/
+
+
 
         val CHANNELID = "Foreground Service ID"
         val channel = NotificationChannel(
@@ -95,6 +116,12 @@ class MyService : Service() {
 
 
 
+    fun getProgress(): Flow<Int> {
+        val data= 10
+        return flow{
+            data
+        }
+    }
 
     inner class MyLocalBinder : Binder() {
         fun getService() : MyService {
