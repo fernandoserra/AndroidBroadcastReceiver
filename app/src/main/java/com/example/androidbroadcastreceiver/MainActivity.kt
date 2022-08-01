@@ -23,6 +23,7 @@ import com.example.androidbroadcastreceiver.utils.NetworkConnection
 import com.example.androidbroadcastreceiver.utils.UserManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -33,6 +34,19 @@ class MainActivity : AppCompatActivity() {
 
     var myService: MyService? = null
     var isBound = false
+
+    private val mConection = object : ServiceConnection{
+        override fun onServiceConnected(className: ComponentName?, binder: IBinder?) {
+            val service = binder as MyService.MyLocalBinder
+            myService = service.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(p0: ComponentName?) {
+            isBound = false
+        }
+
+    }
 
     //private lateinit var  userManager : UserManager
 
@@ -49,6 +63,13 @@ class MainActivity : AppCompatActivity() {
 
         //observeStatus()
 
+        if(isBound){
+            lifecycleScope.launch {
+                myService?.getProgress()?.collect {
+                    Log.i("MainActivity", "onCreate-->: $it")
+                }
+            }
+        }
 
 
         val networkConnection = NetworkConnection(applicationContext)
@@ -134,5 +155,17 @@ class MainActivity : AppCompatActivity() {
         override fun onServiceDisconnected(name: ComponentName) {
             isBound = false
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, MyService::class.java).also {
+            bindService(it,mConection,Context.BIND_AUTO_CREATE)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unbindService(mConection)
     }
 }
