@@ -53,7 +53,8 @@ class HomeFragment : Fragment() {
 
 
          userManager.statusFlow.asLiveData().observe(viewLifecycleOwner) {
-              Log.i(TAG, "statusFlow: $it" )
+              Log.i(TAG, "statusFlow--->: $it" )
+             binding.showCount.text="$it"
           }
 
 
