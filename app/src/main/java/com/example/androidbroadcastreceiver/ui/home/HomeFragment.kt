@@ -1,6 +1,5 @@
 package com.example.androidbroadcastreceiver.ui.home
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
@@ -24,7 +19,7 @@ import com.example.androidbroadcastreceiver.utils.UserManager
 import kotlinx.coroutines.launch
 
 
-class HomeFragment : Fragment() {
+class HomeFragment : FragmentBase() {
 
     private lateinit var preferencesProvider: SharedPreferences
 
@@ -95,14 +90,23 @@ class HomeFragment : Fragment() {
             }*/
         }
 
+        binding.btnMSG.setOnClickListener {
+            show()
+        }
         binding.btnService.setOnClickListener {
 
             val intent = Intent(context, MyService::class.java)
             activity?.stopService(intent)
         }
+        /*binding.showTime.setOnClickListener {
+            (activity as? MainActivity)?.showData()
+        }*/
+
         binding.showTime.setOnClickListener {
             (activity as? MainActivity)?.showData()
         }
+
+
 
         return root
     }

@@ -10,8 +10,9 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.androidbroadcastreceiver.databinding.FragmentDashboardBinding
+import com.example.androidbroadcastreceiver.ui.home.FragmentBase
 
-class DashboardFragment : Fragment() {
+class DashboardFragment : FragmentBase() { //Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
 
@@ -46,6 +47,10 @@ class DashboardFragment : Fragment() {
                 activity?.stopService(it)
                 Log.i(TAG, "Servicio Finalizado fragment ")
             }
+        }
+
+        binding.btnMSG2.setOnClickListener {
+            show()
         }
 
         return root
