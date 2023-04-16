@@ -36,7 +36,6 @@ class DashboardFragment : FragmentBase() { //Fragment() {
 
         binding.btnIniciar.setOnClickListener {
             Intent(context,MyService::class.java).also {
-
                 activity?.startService(it)
                 Log.i(TAG, "Servicio Iniciado fragment ")
             }
@@ -49,9 +48,12 @@ class DashboardFragment : FragmentBase() { //Fragment() {
             }
         }
 
+        // region btn
         binding.btnMSG2.setOnClickListener {
             show()
         }
+        // endregion
+
 
         return root
     }
